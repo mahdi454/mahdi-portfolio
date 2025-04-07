@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
   }, [lastScrollY]);
   return (
 
-    <div className={` fixed top-0 z-10  w-full transition-transform delay-700  ${isVisible ? "translate-y-0" : "-translate-y-full pb-2"}`}>
+    <div className={` fixed top-0 z-10  w-full   ${isVisible ? "translate-y-0" : "-translate-y-full pb-2"}`}>
       <nav className=" mx-auto w-full  max-w-screen-2xl flex items-center justify-between   bg-transparent pr-4 pt-6 ">
         {/* Logo on the left */}
         <Link href="/" className="relative w-10 md:w-60 h-10 -translate-x-4">

@@ -177,21 +177,6 @@ const PageTransition: React.FC<PageTransitionProps> = ({
       >
         {renderSections()}
       </div>
-      <Hoverable hoverText="[ Click here ]"
-        cursorColor="white"
-        borderColor="slate-300"
-        blurAmount="md"  // sm, md, lg, xl, 2xl, etc.
-        bgOpacity="10"   // 5, 10, 20, etc. (percentage)
-      >
-
-        <div
-          className={`fixed inset-0 h-screen w-screen overflow-hidden z-40 ${showButton && isTransitionComplete ? "hidden" : ""
-            }`}
-        >
-
-        </div>
-      </Hoverable>
-
       {/* Loader/Splash screen */}
       {isLoaderVisible && (
         <div
