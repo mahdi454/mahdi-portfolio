@@ -1,9 +1,0 @@
-{
-    "editor.quickSuggestions": {
-      "strings": true
-    },
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "editor.inlineSuggest.enabled": true,
-    "tailwindCSS.emmetCompletions": true
-  }
-  

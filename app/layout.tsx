@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CursorProvider } from "./context/cursorCtx";
 import ClientCursor from "./components/clientCursor";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
+import NavBar from "./components/navBar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const IBM_Font = IBM_Plex_Mono({
+  weight: "400",
+  style: "normal",
   subsets: ["latin"],
 });
 
@@ -27,11 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${IBM_Font.className} antialiased bg-gray-900`}
       >
         <CursorProvider>
+          <ClientCursor />
+         
           {children}
-          <ClientCursor/>
         </CursorProvider>
       </body>
     </html>

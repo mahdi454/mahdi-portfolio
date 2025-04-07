@@ -18,9 +18,8 @@ interface PageTransitionProps {
 const TransitionContent = memo(
   ({ children, visible }: { children: React.ReactNode; visible: boolean }) => (
     <div
-      className={`transition-opacity duration-700 ease-in-out ${
-        visible ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
+      className={`transition-opacity duration-700 ease-in-out overflow-hidden ${visible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
     >
       {children}
     </div>
@@ -130,7 +129,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({
     if (!showButton) {
       const timer = setTimeout(() => {
         slideUp();
-      }, 2000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -144,97 +143,122 @@ const PageTransition: React.FC<PageTransitionProps> = ({
 
   // Create section divs for the transition
   const renderSections = () => {
-    return Array.from({ length: sections }).map((_, i) => (
-      <div
-        key={i}
-        className="fixed h-full bottom-full"
-        style={{
-          background: color,
-          width: `${100 / sections}%`,
-          left: `${(100 / sections) * i}%`,
-          willChange: "transform", // Optimize for animation
-        }}
-        ref={(el) => setDivRef(el as HTMLDivElement, i)}
-      />
-    ));
+    const step = 100 / sections;
+
+    return Array.from({ length: sections }).map((_, i) => {
+      // Round width/left to 4 decimals to avoid floating-point quirks
+      const width = parseFloat((step).toFixed(4));
+      const left = parseFloat((step * i).toFixed(4));
+
+      return (
+        <div
+          key={i}
+          className="fixed h-screen bottom-full overflow-hidden"
+          style={{
+            background: color,
+            width: `calc(${width}% + 0.5px)`,  // tiny bump to fix subpixel gap
+            left: `${left}%`,
+            willChange: "transform",
+          }}
+          ref={(el) => setDivRef(el as HTMLDivElement, i)}
+        />
+      );
+    });
   };
+
 
   return (
     <>
       {/* Transition container - will be hidden after animation */}
       <div
         ref={transitionContainerRef}
-        className={isTransitionComplete ? "hidden" : ""}
+        className={`fixed inset-0 h-screen w-screen overflow-hidden z-30 ${isTransitionComplete ? "hidden" : ""
+          }`}
       >
         {renderSections()}
       </div>
+      <Hoverable hoverText="[ Click here ]"
+        cursorColor="white"
+        borderColor="slate-300"
+        blurAmount="md"  // sm, md, lg, xl, 2xl, etc.
+        bgOpacity="10"   // 5, 10, 20, etc. (percentage)
+      >
+
+        <div
+          className={`fixed inset-0 h-screen w-screen overflow-hidden z-40 ${showButton && isTransitionComplete ? "hidden" : ""
+            }`}
+        >
+
+        </div>
+      </Hoverable>
 
       {/* Loader/Splash screen */}
       {isLoaderVisible && (
         <div
           ref={loaderRef}
-          className={`fixed inset-0 min-w-screen h-screen z-50 ${
-            !showButton && "flex items-center justify-center"
-          }`}
+          className={`fixed inset-0 h-screen w-screen overflow-hidden z-50 flex items-center justify-center`}
           style={{ opacity: 0 }}
         >
-          {showButton ? (
-            <>
-              <div className="fixed top-0 left-0">
-                <div className="container mx-auto flex justify-center px-2 sm:px-4">
-                  <LogoAnimateA />
-                </div>
+          {/* {showButton ? ( */}
+          <>
+            <div className="fixed top-0 left-0">
+              <div className="container mx-auto flex justify-center p-4">
+                <LogoAnimateA />
               </div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="flex flex-col gap-4">
-                  <p className="text-slate-300 text-2xl font-light p-1 tracking-widest text-center">
+            </div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="flex flex-col gap-4">
+                {/* <p className="text-slate-300 text-2xl font-light p-1 tracking-widest text-center">
                     Hi, I'm
-                  </p>
+                  </p> */}
 
-                  <button onClick={slideUp}>
-                    <Hoverable hoverText="[ Open ]" >
-                      <AnimatedLetters />
-                    </Hoverable>
-                    {isTouchAble && (
-                      <div
-                        className=" px-4 py-2  text-center  rounded-full"
-                        style={{
-                          backdropFilter: "blur(10px)",
-                          backgroundColor: "rgba(255, 255, 255, 0.2)",
-                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                        }}
-                      >
-                        {" "}
-                        see more
-                      </div>
-                    )}
-                  </button>
+                <div
+                  onClick={slideUp}>
+                  <Hoverable hoverText="[ Click here ]"
+                    cursorColor="white"
+                    borderColor="slate-300"
+                    blurAmount="md"  // sm, md, lg, xl, 2xl, etc.
+                    bgOpacity="10"   // 5, 10, 20, etc. (percentage)
+                  >
+                    <AnimatedLetters />
+                  </Hoverable>
+                  {isTouchAble && showButton && (
+
+                    <div className="flex items-center justify-center">
+                      <button className="relative   px-8 py-2 text-white bg-white/20 backdrop-blur-md shadow-md  transition hover:bg-[rgb(0,92,92)]  ">
+                        <span className="absolute  h-2 w-2 rounded-full top-4.5 left-3  bg-green-400 animate-pulse  "></span>
+                        see more <span className="font-black">&rarr;</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="fixed bottom-0 w-full">
-                <div>
-                  <p className="text-[#F2F0EF] px-2 sm:px-8 max-w-lg sm:text-2xl tracking-wider text-xl font-light">
-                    Passionate web developer focused on crafting clean, modern,
-                    and user-friendly digital experiences.
-                  </p>
-                </div>
-                <div className="flex justify-between items-center px-2 sm:px-8 py-1 sm:py-4 text-[#F2F0EF]">
-                  <p className="underline text-lg">Index V.01</p>
-                  <div className="flex items-center gap-1 font-semibold text-lg">
-                    <p className="text-2xl font-mono">&copy;</p>
-                    <p className="mb-2"> 2025</p>
-                  </div>
+            </div>
+            <div className="fixed bottom-0 w-full">
+
+
+              <p className="text-[#F2F0EF] px-2 sm:px-8 max-w-lg sm:text-2xl tracking-wider text-xl font-light mb-1">
+                {/* Passionate web developer focused on crafting clean, modern,
+                    and user-friendly digital experiences. */}
+                Remember, the average human life is about 26,645 days.
+              </p>
+              <div className="flex justify-between items-center px-2 sm:px-8 py-2 sm:py-4 text-[#F2F0EF]">
+                <p className="underline text-lg">Index V.01</p>
+                <div className="flex items-center gap-1 font-semibold text-lg">
+                  <p className="text-2xl font-mono">&copy;</p>
+                  <p className="mb-2"> 2025</p>
                 </div>
               </div>
-            </>
-          ) : (
+            </div>
+          </>
+          {/* ) : (
             <div className="flex space-x-3">
               <span className="w-4 h-4 bg-[#F2F0EF] rounded-full animate-bounce1" />
               <span className="w-4 h-4 bg-[#F2F0EF] rounded-full animate-bounce2" />
               <span className="w-4 h-4 bg-[#F2F0EF] rounded-full animate-bounce3" />
             </div>
-          )}
-        </div>
+          )} */}
+        </div >
       )}
 
       {/* Main content */}
