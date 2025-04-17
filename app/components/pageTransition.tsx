@@ -184,7 +184,6 @@ const PageTransition: React.FC<PageTransitionProps> = ({
           className={`fixed inset-0 h-screen w-screen overflow-hidden z-50 flex items-center justify-center`}
           style={{ opacity: 0 }}
         >
-          {/* {showButton ? ( */}
           <>
             <div className="fixed top-0 left-0">
               <div className="container mx-auto flex justify-center p-4">
@@ -236,13 +235,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({
               </div>
             </div>
           </>
-          {/* ) : (
-            <div className="flex space-x-3">
-              <span className="w-4 h-4 bg-[#F2F0EF] rounded-full animate-bounce1" />
-              <span className="w-4 h-4 bg-[#F2F0EF] rounded-full animate-bounce2" />
-              <span className="w-4 h-4 bg-[#F2F0EF] rounded-full animate-bounce3" />
-            </div>
-          )} */}
+
         </div >
       )}
 

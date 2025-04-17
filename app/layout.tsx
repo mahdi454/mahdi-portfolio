@@ -3,7 +3,8 @@ import "./globals.css";
 import { CursorProvider } from "./context/cursorCtx";
 import ClientCursor from "./components/clientCursor";
 import { IBM_Plex_Mono } from "next/font/google";
-import NavBar from "./components/navBar";
+import ParticleBackground from "./components/backGround";
+import { Toaster } from "sonner";
 
 const IBM_Font = IBM_Plex_Mono({
   weight: "400",
@@ -27,9 +28,11 @@ export default function RootLayout({
         className={`${IBM_Font.className} antialiased bg-gray-900`}
       >
         <CursorProvider>
+          <ParticleBackground/>
           <ClientCursor />
          
           {children}
+          <Toaster richColors position="top-right" />
         </CursorProvider>
       </body>
     </html>

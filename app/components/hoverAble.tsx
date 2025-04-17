@@ -34,7 +34,6 @@ const Hoverable = ({
     setBorderColor,
     setBlurAmount,
     setBgOpacity,
-    cursorColor: contextCursorColor 
   } = useCursor();
   const isTouchAble = useIsTouchDevice();
 

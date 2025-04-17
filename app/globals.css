@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+html {
+  scroll-behavior: smooth;
+}
+
 
 
 /* Loader 3 balls bouncing animation */
@@ -406,5 +410,17 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+
+@layer utilities {
+  .inset-top-emerald {
+    box-shadow: inset 0 8px 10px -8px rgba(0,128,128,0.8);
+  }
+
+  /* Optionally add a hover variant */
+  .hover\:inset-top-emerald:hover {
+    box-shadow: inset 0 8px 10px -8px rgba(0,128,128,0.8);
   }
 }

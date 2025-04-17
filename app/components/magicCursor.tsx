@@ -19,11 +19,11 @@ const MagicCursor = () => {
     blurAmount,
     bgOpacity 
   } = useCursor();
-  const ratio = 0.05;
+  const ratio = 0.2;
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     mouseRef.current = { x: e.clientX, y: e.clientY };
-  }, []);
+  }, [ballRef]);
 
   const animateCursor = useCallback(() => {
     if (!active && ballRef.current) {
@@ -80,3 +80,4 @@ const MagicCursor = () => {
 };
 
 export default MagicCursor;
+
